@@ -6,9 +6,7 @@ import os
 import sys
 import logging
 
-sys.path.append('./jieba-0.37/lib')
 import jieba.posseg as pseg
-
 
 def maskCNName(s):
     '''中文分词检测中文姓名并处理'''
@@ -19,9 +17,7 @@ def maskCNName(s):
         if m is not None and len(m) > 0:
             firstName = m[0].decode('utf8')[0:1].encode('utf8')
             s = re.sub(m[0], firstName + '**', s)
-
     return s
-
 
 def maskBankCardNo(s):
     '''识别银行卡号并处理'''
@@ -32,9 +28,7 @@ def maskBankCardNo(s):
             startNum = one[0:6]
             endNum = one[-4:]
             s = re.sub(one, '%s*********%s' % (startNum, endNum), s)
-
     return s
-
 
 def maskIdenNo(s):
     '''识别身份证号并处理'''
@@ -50,9 +44,7 @@ def maskIdenNo(s):
             endNum = one[0][-1]
             s = re.sub(one[0], '%s***************%s' % (startNum,
                        endNum), s)
-
     return s
-
 
 def maskPhoneNo(s):
     '''识别手机开户并处理'''
@@ -63,9 +55,7 @@ def maskPhoneNo(s):
             startNum = one[0:3]
             endNum = one[-2:]
             s = re.sub(one, '%s******%s' % (startNum, endNum), s)
-
     return s
-
 
 def maskEmailAddr(s):
     '''识别邮箱地址并处理'''
@@ -78,9 +68,7 @@ def maskEmailAddr(s):
             m1 = re.findall('(\w+)@', one[0])
             maskedOne = re.sub(m1[0], '%s******' % m1[0][0], one[0])
             s = re.sub(one[0], maskedOne, s)
-
     return s
-
 
 def textMask(s):
     '''对敏感信息进行识别及过滤 '''
@@ -110,7 +98,7 @@ def main(filename):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print 'Usage: ./PyTextMask.py <textfile>'
+        print 'Usage: python ./PyTextMask.py <textfile>'
         print '\nAuthor: deangao(gaowenhui2009@aliyun.com)'
         exit()
     main(sys.argv[1])
