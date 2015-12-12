@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
+encoding//bin/PyTextScan.py=utf-8
+encoding//conf/PyTextScan.ini=UTF-8
 encoding//test/TestEnv.py=utf-8
-encoding/PyTextScan.py=utf-8
+encoding/<project>=UTF-8

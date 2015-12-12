@@ -1,14 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+__author__ = 'deangao'
+__version__ = 'v1.0.0'
+
 import re
-import os
-import sys
 import logging
+import configobj
+import argparse
 
 import jieba.posseg as pseg
 
-def maskCNName(s):
+def scanCNName(s):
     '''中文分词检测中文姓名并处理'''
 
     jiebaRes = pseg.cut(s)
@@ -19,7 +22,7 @@ def maskCNName(s):
             s = re.sub(m[0], firstName + '**', s)
     return s
 
-def maskBankCardNo(s):
+def scanBankCardNo(s):
     '''识别银行卡号并处理'''
 
     m = re.findall('\D(6\d{14,18})\D', s)
@@ -30,7 +33,7 @@ def maskBankCardNo(s):
             s = re.sub(one, '%s*********%s' % (startNum, endNum), s)
     return s
 
-def maskIdenNo(s):
+def scanIdenNo(s):
     '''识别身份证号并处理'''
 
     m = \
@@ -46,7 +49,7 @@ def maskIdenNo(s):
                        endNum), s)
     return s
 
-def maskPhoneNo(s):
+def scanPhoneNo(s):
     '''识别手机开户并处理'''
 
     m = re.findall('\D(1[3578]\d{9})\D', s)
@@ -57,7 +60,7 @@ def maskPhoneNo(s):
             s = re.sub(one, '%s******%s' % (startNum, endNum), s)
     return s
 
-def maskEmailAddr(s):
+def scanEmailAddr(s):
     '''识别邮箱地址并处理'''
 
     m = \
@@ -70,35 +73,46 @@ def maskEmailAddr(s):
             s = re.sub(one[0], maskedOne, s)
     return s
 
-def textMask(s):
+def textScan(s):
     '''对敏感信息进行识别及过滤 '''
 
-    s = maskBankCardNo(s)
-    s = maskIdenNo(s)
-    s = maskPhoneNo(s)
-    s = maskEmailAddr(s)
-    s = maskCNName(s)
+    s = scanBankCardNo(s)
+    s = scanIdenNo(s)
+    s = scanPhoneNo(s)
+    s = scanEmailAddr(s)
+    s = scanCNName(s)
     return s
 
 
-def main(filename):
+def main():
+    
+    #load config file
+    conf_ini = "../conf/PyTextScan.ini"
+    config = configobj.ConfigObj(conf_ini,encoding='UTF8')
+    
+    #generate the argparse object
+    parser = argparse.ArgumentParser(description='''This is a program to scan the text format content 
+            by http or socket method with configure file''')
+
+    parser.add_argument('-v','--version', action='version', version='%(prog)s 1.0')
+
+    print config['server']['servername']
+    
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s] %(name)s:%(levelname)s: %(message)s'
                         )
+    '''
     if not os.path.exists(filename):
         logging.error('Not such file!')
         exit()
 
+   
     f = open(filename, 'r')
     maskedText = ''
     for oneline in f:
-        maskedText = maskedText + textMask(oneline)
+        maskedText = maskedText + textScan(oneline)
     print maskedText
-
-
+    '''
+    
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print 'Usage: python ./PyTextMask.py <textfile>'
-        print '\nAuthor: deangao(gaowenhui2009@aliyun.com)'
-        exit()
-    main(sys.argv[1])
+    main()
