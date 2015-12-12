@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'deangao'
-__version__ = 'v1.0.0'
+__version__ = '1.0.0'
 
 import re
+import os
+import sys
 import logging
 import configobj
 import argparse
