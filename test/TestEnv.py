@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import logging.config
 
 parser = argparse.ArgumentParser(description='Change the option prefix charaters')
 
@@ -50,3 +51,10 @@ try:
     print "[configobj] module had been installed"
 except ImportError:
     print "[configobj] module is not installed"
+    
+logging.config.fileConfig("../conf/logger.conf")
+logger = logging.getLogger("pytextscan")
+ 
+logger.debug('This is debug message')
+logger.info('This is info message')
+logger.warning('This is warning message')
