@@ -9,22 +9,20 @@ Created on 2015年12月15日
 
 import re
 import jieba.posseg as pseg
-import chardet
 
 class Scanner(object):
     '''
     classdocs
     '''
 
-    def __init__(self, strline):
+    def __init__(self, ):
         '''
         Constructor
         '''
         
+    def doScan(self, strline):
+
         self.__content = strline
-        
-    def doScan(self):
-        
         self.__content = self.scanCNName()
         self.__content = self.scanBankCardNo()
         self.__content = self.scanIdenNo()
@@ -108,17 +106,16 @@ class Masker(object):
     classdocs
     '''
 
-    def __init__(self, strline):
+    def __init__(self):
         '''
         Constructor
         '''
         
+    def doMask(self, strline):
+        '''
+        '''
+        
         self.__content = strline
-        
-    def doMask(self):
-        '''
-        '''
-        
         self.__content = self.maskCNName()
         self.__content = self.maskBankCardNo()
         self.__content = self.maskIdenNo()
