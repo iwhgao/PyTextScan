@@ -36,6 +36,7 @@ class ProcessText(Protocol):
 
     def connectionLost(self, reason='asdf'):
         print "Coonection lost from %s" % (str(self.transport.getPeer()))
+        self.transport.loseConnection()
         
 class ProcessTextFactory(Factory):
     '''
