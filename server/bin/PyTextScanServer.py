@@ -8,6 +8,9 @@ from twisted.internet.protocol import Protocol
 from twisted.internet.protocol import Factory
 from twisted.internet import reactor
 import logging.config
+
+import sys
+sys.path.append('../..')
 from pytextscan import core
 
 class ProcessText(Protocol):
@@ -50,5 +53,5 @@ class ProcessTextFactory(Factory):
     def buildProtocol(self, addr):  
         return ProcessText(self.logger) 
     
-reactor.listenTCP(8124, ProcessTextFactory()) #@UndefinedVariable
+reactor.listenTCP(10113, ProcessTextFactory()) #@UndefinedVariable
 reactor.run() #@UndefinedVariable
