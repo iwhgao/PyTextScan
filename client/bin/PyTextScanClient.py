@@ -3,6 +3,8 @@
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet import reactor
 
+from configobj import ConfigObj
+
 class Echo(Protocol):
     def sendData(self):
         data = raw_input('> ')
@@ -36,6 +38,11 @@ class EchoClientFactory(ClientFactory):
         print 'Connection failed. Reason:', reason
         self.transport.loseConnection()
 
-host = '120.24.215.136'
-reactor.connectTCP(host, 8124, EchoClientFactory()) #@UndefinedVariable
+conf_ini = "../conf/PyTextScan-Client.ini"
+config = ConfigObj(conf_ini,encoding='UTF8')
+
+host = str(config['server']['servername'])
+port = int(config['server']['serverport'])
+
+reactor.connectTCP(host, port, EchoClientFactory()) #@UndefinedVariable
 reactor.run() #@UndefinedVariable
