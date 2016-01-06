@@ -8,10 +8,13 @@ from configobj import ConfigObj
 class Echo(Protocol):
     def sendData(self):
         data = raw_input('> ')
-        if data:
-            self.transport.write(data)
-        else:
+        data = data.strip()
+        
+        if data is not None or data == 'exit':
             self.transport.write('Bye')
+            self.transport.loseConnection()
+        else:
+            self.transport.write(data)
             
     def dataReceived(self, data):
         print data
@@ -21,7 +24,7 @@ class Echo(Protocol):
         self.sendData()
         
     def connectionLost(self, reason):
-        print "Connection lost", reason
+        print "Connection lost"
         
 class EchoClientFactory(ClientFactory):
     def startedConnecting(self, connector):
